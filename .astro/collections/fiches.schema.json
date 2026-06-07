@@ -1,0 +1,77 @@
+{
+  "$ref": "#/definitions/fiches",
+  "definitions": {
+    "fiches": {
+      "type": "object",
+      "properties": {
+        "titre": {
+          "type": "string"
+        },
+        "pathologie": {
+          "type": "string"
+        },
+        "zone": {
+          "type": "string",
+          "enum": [
+            "dos",
+            "épaule",
+            "genou",
+            "cheville",
+            "pied",
+            "hanche",
+            "coude",
+            "poignet",
+            "cou",
+            "autre"
+          ]
+        },
+        "niveau": {
+          "type": "string",
+          "enum": [
+            "débutant",
+            "intermédiaire",
+            "avancé"
+          ]
+        },
+        "duree": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "image": {
+          "type": "string"
+        },
+        "pubDate": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "string",
+              "format": "date"
+            },
+            {
+              "type": "integer",
+              "format": "unix-time"
+            }
+          ]
+        },
+        "$schema": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "titre",
+        "pathologie",
+        "zone",
+        "niveau",
+        "description",
+        "pubDate"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "$schema": "http://json-schema.org/draft-07/schema#"
+}

@@ -5,7 +5,7 @@ const fiches = defineCollection({
   schema: z.object({
     titre: z.string(),
     pathologie: z.string(),
-    zone: z.enum(['dos', 'épaule', 'genou', 'cheville', 'hanche', 'coude', 'poignet', 'cou', 'autre']),
+    zone: z.enum(['dos', 'épaule', 'genou', 'cheville', 'pied', 'hanche', 'coude', 'poignet', 'cou', 'autre']),
     niveau: z.enum(['débutant', 'intermédiaire', 'avancé']),
     duree: z.string().optional(),
     description: z.string(),
