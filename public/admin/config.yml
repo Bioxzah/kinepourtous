@@ -1,6 +1,6 @@
 backend:
   name: github
-  repo: VOTRE_USER_GITHUB/kinepourtous
+  repo: Bioxzah/kinepourtous
   branch: main
 
 media_folder: public/images
