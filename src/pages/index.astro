@@ -1,0 +1,28 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+const fiches = await getCollection('fiches');
+const dernieresFiches = fiches.slice(0, 3);
+---
+<BaseLayout titre="Accueil">
+  <section class="hero">
+    <h1>Vos exercices de kiné, partout et à tout moment</h1>
+    <p>Retrouvez toutes vos fiches d'exercices classées par pathologie et zone anatomique.</p>
+    <a href="/fiches" class="btn-primary">Voir toutes les fiches</a>
+  </section>
+
+  <section class="dernières-fiches">
+    <h2>Dernières fiches ajoutées</h2>
+    <div class="grid">
+      {dernieresFiches.map(fiche => (
+        <a href={`/fiches/${fiche.slug}`} class="card">
+          <span class="badge">{fiche.data.zone}</span>
+          <h3>{fiche.data.titre}</h3>
+          <p>{fiche.data.description}</p>
+          <span class="niveau">{fiche.data.niveau}</span>
+        </a>
+      ))}
+    </div>
+  </section>
+</BaseLayout>

@@ -1,0 +1,89 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+const fiches = await getCollection('fiches');
+
+const zones = [...new Set(fiches.map(f => f.data.zone))].sort();
+const niveaux = ['débutant', 'intermédiaire', 'avancé'];
+---
+<BaseLayout titre="Fiches d'exercices" description="Toutes les fiches d'exercices de kinésithérapie par pathologie et zone anatomique.">
+  <section class="fiches-header">
+    <h1>Fiches d'exercices</h1>
+    <p>{fiches.length} fiche{fiches.length > 1 ? 's' : ''} disponible{fiches.length > 1 ? 's' : ''}</p>
+  </section>
+
+  <section class="filtres">
+    <div class="filtre-groupe">
+      <label>Zone anatomique</label>
+      <div class="filtre-boutons" id="filtres-zone">
+        <button class="filtre actif" data-zone="tous">Toutes</button>
+        {zones.map(zone => (
+          <button class="filtre" data-zone={zone}>{zone}</button>
+        ))}
+      </div>
+    </div>
+    <div class="filtre-groupe">
+      <label>Niveau</label>
+      <div class="filtre-boutons" id="filtres-niveau">
+        <button class="filtre actif" data-niveau="tous">Tous</button>
+        {niveaux.map(n => (
+          <button class="filtre" data-niveau={n}>{n}</button>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <div class="grid" id="grille-fiches">
+    {fiches.map(fiche => (
+      <a
+        href={`/fiches/${fiche.slug}`}
+        class="card"
+        data-zone={fiche.data.zone}
+        data-niveau={fiche.data.niveau}
+      >
+        <span class="badge">{fiche.data.zone}</span>
+        <h2>{fiche.data.titre}</h2>
+        <p>{fiche.data.description}</p>
+        <div class="card-footer">
+          <span class="niveau">{fiche.data.niveau}</span>
+          {fiche.data.duree && <span class="duree">{fiche.data.duree}</span>}
+        </div>
+      </a>
+    ))}
+  </div>
+</BaseLayout>
+
+<script>
+  const boutons = document.querySelectorAll<HTMLButtonElement>('.filtre');
+  const cartes = document.querySelectorAll<HTMLElement>('.card');
+
+  let zoneActive = 'tous';
+  let niveauActif = 'tous';
+
+  function filtrer() {
+    cartes.forEach(carte => {
+      const zoneOk = zoneActive === 'tous' || carte.dataset.zone === zoneActive;
+      const niveauOk = niveauActif === 'tous' || carte.dataset.niveau === niveauActif;
+      carte.style.display = zoneOk && niveauOk ? '' : 'none';
+    });
+  }
+
+  document.getElementById('filtres-zone')?.addEventListener('click', (e) => {
+    const btn = (e.target as HTMLElement).closest<HTMLButtonElement>('[data-zone]');
+    if (!btn) return;
+    document.querySelectorAll('[data-zone]').forEach(b => b.classList.remove('actif'));
+    btn.classList.add('actif');
+    zoneActive = btn.dataset.zone!;
+    filtrer();
+  });
+
+  document.getElementById('filtres-niveau')?.addEventListener('click', (e) => {
+    const btn = (e.target as HTMLElement).closest<HTMLButtonElement>('[data-niveau]');
+    if (!btn) return;
+    document.querySelectorAll('[data-niveau]').forEach(b => b.classList.remove('actif'));
+    btn.classList.add('actif');
+    niveauActif = btn.dataset.niveau!;
+    filtrer();
+  });
+</script>

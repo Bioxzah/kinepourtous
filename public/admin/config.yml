@@ -1,0 +1,33 @@
+backend:
+  name: github
+  repo: VOTRE_USER_GITHUB/kinepourtous
+  branch: main
+
+media_folder: public/images
+public_folder: /images
+
+collections:
+  - name: fiches
+    label: Fiches d'exercices
+    folder: src/content/fiches
+    create: true
+    slug: "{{fields.zone}}-{{slug}}"
+    fields:
+      - { label: Titre, name: titre, widget: string }
+      - label: Pathologie
+        name: pathologie
+        widget: string
+        hint: "Ex : Lombalgie, Tendinite rotule, Entorse cheville..."
+      - label: Zone anatomique
+        name: zone
+        widget: select
+        options: [dos, épaule, genou, cheville, hanche, coude, poignet, cou, autre]
+      - label: Niveau
+        name: niveau
+        widget: select
+        options: [débutant, intermédiaire, avancé]
+      - { label: Durée estimée, name: duree, widget: string, required: false, hint: "Ex : 20 min" }
+      - { label: Description courte, name: description, widget: text }
+      - { label: Image principale, name: image, widget: image, required: false }
+      - { label: Date de publication, name: pubDate, widget: datetime }
+      - { label: Contenu de la fiche, name: body, widget: markdown }

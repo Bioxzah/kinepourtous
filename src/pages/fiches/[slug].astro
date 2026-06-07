@@ -1,0 +1,47 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+export async function getStaticPaths() {
+  const fiches = await getCollection('fiches');
+  return fiches.map(fiche => ({
+    params: { slug: fiche.slug },
+    props: { fiche },
+  }));
+}
+
+const { fiche } = Astro.props;
+const { Content } = await fiche.render();
+---
+<BaseLayout titre={fiche.data.titre} description={fiche.data.description}>
+  <article class="fiche">
+    <header class="fiche-header">
+      <div class="fiche-meta">
+        <span class="badge">{fiche.data.zone}</span>
+        <span class="niveau">{fiche.data.niveau}</span>
+        {fiche.data.duree && <span class="duree">{fiche.data.duree}</span>}
+      </div>
+      <h1>{fiche.data.titre}</h1>
+      <p class="description">{fiche.data.description}</p>
+      <button onclick="window.print()" class="btn-print">
+        Télécharger en PDF
+      </button>
+    </header>
+
+    <div class="fiche-contenu">
+      <Content />
+    </div>
+
+    <footer class="fiche-footer no-print">
+      <a href="/fiches">← Retour aux fiches</a>
+    </footer>
+  </article>
+</BaseLayout>
+
+<style>
+  @media print {
+    .no-print { display: none; }
+    header nav, footer { display: none; }
+    .btn-print { display: none; }
+  }
+</style>
