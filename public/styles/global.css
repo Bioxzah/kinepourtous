@@ -2,9 +2,11 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
-  --bleu: #16a34a;
-  --bleu-clair: #f0fdf4;
-  --vert: #15803d;
+  --bleu: #697A34;
+  --bleu-clair: #EFF2E5;
+  --vert: #5A6A2C;
+  --bordeaux: #7D2040;
+  --bordeaux-clair: #F8EEF2;
   --gris: #6b7280;
   --gris-clair: #f3f4f6;
   --texte: #111827;
@@ -70,7 +72,7 @@ footer { background: var(--gris-clair); text-align: center; padding: 1.25rem 1re
   font-size: 1rem;
   text-align: center;
 }
-.btn-primary:hover { background: #15803d; }
+.btn-primary:hover { background: #5A6A2C; }
 .btn-print { background: #0d9488; }
 .btn-print:hover { background: #0f766e; }
 
@@ -154,7 +156,7 @@ footer { background: var(--gris-clair); text-align: center; padding: 1.25rem 1re
 .fiche-contenu table { width: 100%; border-collapse: collapse; font-size: 0.9rem; margin: 1rem 0; overflow-x: auto; display: block; }
 .fiche-contenu th, .fiche-contenu td { padding: 0.5rem 0.75rem; border: 1px solid #e5e7eb; text-align: left; }
 .fiche-contenu th { background: var(--gris-clair); font-weight: 600; }
-.fiche-contenu blockquote { border-left: 3px solid var(--bleu); padding: 0.75rem 1rem; background: var(--bleu-clair); border-radius: 0 var(--rayon) var(--rayon) 0; margin: 1rem 0; color: #166534; }
+.fiche-contenu blockquote { border-left: 3px solid var(--bleu); padding: 0.75rem 1rem; background: var(--bleu-clair); border-radius: 0 var(--rayon) var(--rayon) 0; margin: 1rem 0; color: #4A5520; }
 .fiche-footer { margin-top: 2.5rem; padding-top: 1.5rem; border-top: 1px solid #e5e7eb; }
 .fiche-footer a { color: var(--bleu); text-decoration: none; font-weight: 500; }
 .btn-print {

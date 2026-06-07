@@ -1,171 +1,245 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { getCollection } from 'astro:content';
-
-const fiches = await getCollection('fiches');
-const dernieresFiches = fiches.slice(0, 3);
 ---
 <BaseLayout titre="Accueil">
-  <section class="hero">
-    <div class="hero-inner">
-      <p class="hero-label">Cabinet de kinésithérapie</p>
-      <h1>Vos exercices de kiné,<br/>partout et à tout moment</h1>
-      <p class="hero-sub">Retrouvez toutes vos fiches d'exercices classées par pathologie et zone anatomique. Consultables sur mobile, téléchargeables en PDF.</p>
-      <div class="hero-actions">
-        <a href="/fiches" class="btn-primary">Voir toutes les fiches</a>
-        <a href="/contact" class="btn-secondary">Prendre rendez-vous</a>
-      </div>
+  <div class="home">
+    <div class="intro">
+      <p class="intro-label">Cabinet de kinésithérapie</p>
+      <h1>Kiné Pour Tous</h1>
+      <p class="intro-sub">Sélectionnez une zone anatomique pour accéder à vos fiches d'exercices.</p>
     </div>
-  </section>
 
-  <section class="stats">
-    <div class="stat">
-      <span class="stat-number">{fiches.length}</span>
-      <span class="stat-label">fiches d'exercices</span>
-    </div>
-    <div class="stat">
-      <span class="stat-number">PDF</span>
-      <span class="stat-label">téléchargeables</span>
-    </div>
-    <div class="stat">
-      <span class="stat-number">100%</span>
-      <span class="stat-label">gratuit</span>
-    </div>
-  </section>
+    <div class="body-container">
+      <svg viewBox="0 0 200 420" xmlns="http://www.w3.org/2000/svg" class="body-svg" aria-label="Corps humain cliquable par zone">
 
-  <section class="dernieres-fiches">
-    <h2>Dernières fiches ajoutées</h2>
-    <div class="grid">
-      {dernieresFiches.map(fiche => (
-        <a href={`/fiches/${fiche.slug}`} class="card">
-          <span class="badge">{fiche.data.zone}</span>
-          <h3>{fiche.data.titre}</h3>
-          <p>{fiche.data.description}</p>
-          <div class="card-footer">
-            <span class="niveau">{fiche.data.niveau}</span>
-            {fiche.data.duree && <span class="duree">{fiche.data.duree}</span>}
-          </div>
+        <!-- Tête → toutes les fiches -->
+        <a href="/fiches">
+          <g class="bz" aria-label="Toutes les fiches">
+            <ellipse cx="100" cy="50" rx="28" ry="33"/>
+          </g>
         </a>
-      ))}
-    </div>
-    <div class="voir-tout">
-      <a href="/fiches" class="btn-outline">Voir toutes les fiches →</a>
-    </div>
-  </section>
 
-  <section class="cabinet">
-    <div class="cabinet-inner">
-      <div class="cabinet-texte">
-        <h2>Le cabinet</h2>
-        <p>Des fiches d'exercices professionnelles, créées par votre kinésithérapeute, pour accompagner votre rééducation à domicile en toute sécurité.</p>
-        <div class="cabinet-adresse">
-          <span class="cabinet-icon">📍</span>
-          <span>Adresse du cabinet — à compléter</span>
-        </div>
-        <a href="/contact" class="btn-primary" style="margin-top:1rem;display:inline-block">Contact & RDV</a>
-      </div>
-      <div class="cabinet-zones">
-        <h3>Zones traitées</h3>
-        <div class="zones-liste">
-          {['Dos', 'Épaule', 'Genou', 'Cheville', 'Pied', 'Coude'].map(z => (
-            <span class="zone-tag">{z}</span>
-          ))}
-        </div>
-      </div>
+        <!-- Cou (visuel) -->
+        <rect x="92" y="82" width="16" height="13" fill="#EFF2E5" stroke="rgba(70,80,40,0.18)" stroke-width="1" style="pointer-events:none"/>
+
+        <!-- Buste → Dos -->
+        <a href="/fiches?zone=dos">
+          <g class="bz" aria-label="Dos">
+            <path d="M62 94 C60 140 63 185 66 205 L134 205 C137 185 140 140 138 94 Q120 87 100 87 Q80 87 62 94 Z"/>
+            <text class="bz-lbl" x="100" y="152">DOS</text>
+          </g>
+        </a>
+
+        <!-- Bassin → Dos -->
+        <a href="/fiches?zone=dos">
+          <g class="bz" aria-label="Dos · Bassin">
+            <path d="M66 206 C64 222 66 240 70 250 Q84 258 100 258 Q116 258 130 250 C134 240 136 222 134 206 Z"/>
+          </g>
+        </a>
+
+        <!-- Épaule gauche -->
+        <a href="/fiches?zone=%C3%A9paule">
+          <g class="bz" aria-label="Épaule">
+            <path d="M62 96 C42 104 30 122 28 142 L44 146 C46 132 54 116 70 108 Z"/>
+          </g>
+        </a>
+
+        <!-- Avant-bras gauche → Coude -->
+        <a href="/fiches?zone=coude">
+          <g class="bz" aria-label="Coude">
+            <path d="M28 144 C22 168 22 196 26 218 L42 215 C38 196 36 170 44 148 Z"/>
+          </g>
+        </a>
+
+        <!-- Épaule droite -->
+        <a href="/fiches?zone=%C3%A9paule">
+          <g class="bz" aria-label="Épaule">
+            <path d="M138 96 C158 104 170 122 172 142 L156 146 C154 132 146 116 130 108 Z"/>
+          </g>
+        </a>
+
+        <!-- Avant-bras droit → Coude -->
+        <a href="/fiches?zone=coude">
+          <g class="bz" aria-label="Coude">
+            <path d="M172 144 C178 168 178 196 174 218 L158 215 C162 196 164 170 156 148 Z"/>
+          </g>
+        </a>
+
+        <!-- Genou gauche -->
+        <a href="/fiches?zone=genou">
+          <g class="bz" aria-label="Genou">
+            <rect x="66" y="260" width="30" height="64" rx="8"/>
+          </g>
+        </a>
+
+        <!-- Genou droit -->
+        <a href="/fiches?zone=genou">
+          <g class="bz" aria-label="Genou">
+            <rect x="104" y="260" width="30" height="64" rx="8"/>
+          </g>
+        </a>
+
+        <!-- Cheville gauche -->
+        <a href="/fiches?zone=cheville">
+          <g class="bz" aria-label="Cheville">
+            <rect x="66" y="327" width="30" height="58" rx="6"/>
+          </g>
+        </a>
+
+        <!-- Cheville droite -->
+        <a href="/fiches?zone=cheville">
+          <g class="bz" aria-label="Cheville">
+            <rect x="104" y="327" width="30" height="58" rx="6"/>
+          </g>
+        </a>
+
+        <!-- Pied gauche -->
+        <a href="/fiches?zone=pied">
+          <g class="bz" aria-label="Pied">
+            <ellipse cx="81" cy="393" rx="22" ry="10"/>
+          </g>
+        </a>
+
+        <!-- Pied droit -->
+        <a href="/fiches?zone=pied">
+          <g class="bz" aria-label="Pied">
+            <ellipse cx="119" cy="393" rx="22" ry="10"/>
+          </g>
+        </a>
+
+        <!-- Labels côté gauche -->
+        <text class="side-lbl" x="2" y="122" text-anchor="start">Épaule</text>
+        <line x1="28" y1="119" x2="52" y2="119" stroke="rgba(70,80,40,0.15)" stroke-width="0.8"/>
+
+        <text class="side-lbl" x="2" y="183" text-anchor="start">Coude</text>
+        <line x1="28" y1="180" x2="37" y2="180" stroke="rgba(70,80,40,0.15)" stroke-width="0.8"/>
+
+        <text class="side-lbl" x="2" y="296" text-anchor="start">Genou</text>
+        <line x1="40" y1="293" x2="66" y2="293" stroke="rgba(70,80,40,0.15)" stroke-width="0.8"/>
+
+        <text class="side-lbl" x="2" y="360" text-anchor="start">Cheville</text>
+        <line x1="46" y1="357" x2="66" y2="357" stroke="rgba(70,80,40,0.15)" stroke-width="0.8"/>
+
+        <text class="side-lbl" x="100" y="412" text-anchor="middle">Pied</text>
+
+      </svg>
     </div>
-  </section>
+
+    <div class="zone-tags">
+      <a href="/fiches?zone=%C3%A9paule" class="ztag">Épaule</a>
+      <a href="/fiches?zone=dos" class="ztag">Dos</a>
+      <a href="/fiches?zone=coude" class="ztag">Coude</a>
+      <a href="/fiches?zone=genou" class="ztag">Genou</a>
+      <a href="/fiches?zone=cheville" class="ztag">Cheville</a>
+      <a href="/fiches?zone=pied" class="ztag">Pied</a>
+      <a href="/fiches" class="ztag ztag-all">Toutes les fiches →</a>
+    </div>
+  </div>
 </BaseLayout>
 
 <style>
-  .hero {
-    background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
-    border-radius: 1rem;
-    padding: 4rem 2rem;
-    text-align: center;
-    margin-bottom: 2rem;
+  .home {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.75rem;
+    padding: 2rem 0 3rem;
   }
-  .hero-label {
-    font-size: 0.85rem;
+
+  .intro {
+    text-align: center;
+    max-width: 480px;
+  }
+  .intro-label {
+    font-size: 0.78rem;
     font-weight: 600;
     text-transform: uppercase;
-    letter-spacing: 0.1em;
+    letter-spacing: 0.14em;
     color: var(--bleu);
-    margin-bottom: 0.75rem;
+    margin-bottom: 0.5rem;
   }
-  .hero h1 {
-    font-size: clamp(1.8rem, 4vw, 3rem);
-    margin-bottom: 1rem;
-    color: #14532d;
-    line-height: 1.2;
+  .intro h1 {
+    font-size: clamp(1.5rem, 4vw, 2rem);
+    color: var(--vert);
+    margin-bottom: 0.6rem;
+    font-weight: 700;
   }
-  .hero-sub {
-    font-size: 1.1rem;
+  .intro-sub {
+    font-size: 0.92rem;
     color: var(--gris);
-    max-width: 560px;
-    margin: 0 auto 2rem;
+    line-height: 1.5;
   }
-  .hero-actions { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
-  .btn-secondary {
-    display: inline-block;
-    background: white;
-    color: var(--bleu);
-    border: 2px solid var(--bleu);
-    padding: 0.75rem 1.5rem;
-    border-radius: var(--rayon);
-    text-decoration: none;
-    font-weight: 600;
-  }
-  .btn-secondary:hover { background: var(--bleu-clair); }
-  .btn-outline {
-    display: inline-block;
-    border: 2px solid var(--bleu);
-    color: var(--bleu);
-    padding: 0.6rem 1.4rem;
-    border-radius: var(--rayon);
-    text-decoration: none;
-    font-weight: 600;
-  }
-  .btn-outline:hover { background: var(--bleu-clair); }
 
-  .stats {
+  .body-container {
+    width: 100%;
+    max-width: 240px;
+  }
+
+  .body-svg {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  .bz { cursor: pointer; }
+  .bz ellipse, .bz path, .bz rect {
+    fill: #EFF2E5;
+    stroke: rgba(70,80,40,0.22);
+    stroke-width: 1.2;
+    transition: fill 0.18s, stroke 0.18s, stroke-width 0.18s;
+  }
+  .bz:hover ellipse, .bz:hover path, .bz:hover rect {
+    fill: rgba(105,122,52,0.28);
+    stroke: #697A34;
+    stroke-width: 1.8;
+  }
+
+  .bz-lbl {
+    font-family: system-ui, sans-serif;
+    font-size: 7px;
+    fill: rgba(70,80,40,0.45);
+    pointer-events: none;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+  .side-lbl {
+    font-family: system-ui, sans-serif;
+    font-size: 6.5px;
+    fill: rgba(70,80,40,0.38);
+    pointer-events: none;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .zone-tags {
     display: flex;
-    justify-content: center;
-    gap: 3rem;
-    padding: 2rem;
-    background: white;
-    border-radius: var(--rayon);
-    border: 1px solid #e5e7eb;
-    margin-bottom: 3rem;
     flex-wrap: wrap;
+    gap: 0.45rem;
+    justify-content: center;
+    max-width: 340px;
   }
-  .stat { text-align: center; }
-  .stat-number { display: block; font-size: 2rem; font-weight: 800; color: var(--bleu); }
-  .stat-label { font-size: 0.85rem; color: var(--gris); }
-
-  .voir-tout { text-align: center; margin-top: 2rem; }
-
-  .cabinet {
-    background: #14532d;
-    border-radius: 1rem;
-    padding: 3rem 2rem;
-    margin-top: 3rem;
+  .ztag {
+    border: 1px solid rgba(70,80,40,0.22);
+    color: var(--gris);
+    padding: 0.3rem 0.75rem;
+    font-size: 0.8rem;
+    border-radius: var(--rayon);
+    text-decoration: none;
+    transition: all 0.15s;
+    background: white;
+  }
+  .ztag:hover {
+    border-color: var(--bleu);
+    color: var(--bleu);
+    background: var(--bleu-clair);
+  }
+  .ztag-all {
+    border-color: var(--bleu);
+    color: var(--bleu);
+    font-weight: 600;
+  }
+  .ztag-all:hover {
+    background: var(--bleu);
     color: white;
-  }
-  .cabinet-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: start; }
-  .cabinet h2 { color: white; font-size: 1.6rem; margin-bottom: 1rem; }
-  .cabinet p { color: #bbf7d0; margin-bottom: 1rem; }
-  .cabinet-adresse { display: flex; align-items: center; gap: 0.5rem; color: #bbf7d0; }
-  .cabinet-zones h3 { color: white; margin-bottom: 1rem; }
-  .zones-liste { display: flex; flex-wrap: wrap; gap: 0.5rem; }
-  .zone-tag {
-    background: rgba(255,255,255,0.15);
-    color: white;
-    padding: 0.3rem 0.8rem;
-    border-radius: 9999px;
-    font-size: 0.85rem;
-  }
-  @media (max-width: 640px) {
-    .cabinet-inner { grid-template-columns: 1fr; }
-    .stats { gap: 1.5rem; }
   }
 </style>

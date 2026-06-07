@@ -86,4 +86,17 @@ const niveaux = ['débutant', 'intermédiaire', 'avancé'];
     niveauActif = btn.dataset.niveau!;
     filtrer();
   });
+
+  // Auto-filtre depuis URL (?zone=...)
+  const urlZone = new URLSearchParams(window.location.search).get('zone');
+  if (urlZone) {
+    const btn = document.querySelector<HTMLButtonElement>(`[data-zone="${urlZone}"]`);
+    if (btn) {
+      document.querySelectorAll('[data-zone]').forEach(b => b.classList.remove('actif'));
+      btn.classList.add('actif');
+      zoneActive = urlZone;
+      filtrer();
+      btn.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+  }
 </script>
