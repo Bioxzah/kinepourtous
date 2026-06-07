@@ -14,6 +14,7 @@ const { titre, description = 'Fiches d\'exercices de kinésithérapie par pathol
     <title>{titre} — Kiné Pour Tous</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="stylesheet" href="/styles/global.css" />
+    <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
   </head>
   <body>
     <header>
@@ -33,5 +34,16 @@ const { titre, description = 'Fiches d\'exercices de kinésithérapie par pathol
     <footer>
       <p>© {new Date().getFullYear()} Kiné Pour Tous — Cabinet de kinésithérapie</p>
     </footer>
+    <script>
+      if (window.netlifyIdentity) {
+        window.netlifyIdentity.on('init', user => {
+          if (!user) {
+            window.netlifyIdentity.on('login', () => {
+              document.location.href = '/admin/';
+            });
+          }
+        });
+      }
+    </script>
   </body>
 </html>

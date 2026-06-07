@@ -1,12 +1,11 @@
 backend:
-  name: github
-  repo: Bioxzah/kinepourtous
+  name: git-gateway
   branch: main
-  base_url: https://kinepourtous.vercel.app
-  auth_endpoint: api/auth
 
 media_folder: public/images
 public_folder: /images
+
+locale: fr
 
 collections:
   - name: fiches
@@ -23,7 +22,7 @@ collections:
       - label: Zone anatomique
         name: zone
         widget: select
-        options: [dos, épaule, genou, cheville, hanche, coude, poignet, cou, autre]
+        options: [dos, épaule, genou, cheville, pied, hanche, coude, poignet, cou, autre]
       - label: Niveau
         name: niveau
         widget: select
