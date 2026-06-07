@@ -35,15 +35,23 @@ const { titre, description = 'Fiches d\'exercices de kinésithérapie par pathol
       <p>© {new Date().getFullYear()} Kiné Pour Tous — Cabinet de kinésithérapie</p>
     </footer>
     <script>
-      if (window.netlifyIdentity) {
-        window.netlifyIdentity.on('init', user => {
-          if (!user) {
-            window.netlifyIdentity.on('login', () => {
-              document.location.href = '/admin/';
-            });
+      window.netlifyIdentity = window.netlifyIdentity || {};
+      document.addEventListener('DOMContentLoaded', () => {
+        if (window.netlifyIdentity) {
+          window.netlifyIdentity.on('init', user => {
+            if (!user) {
+              window.netlifyIdentity.on('login', () => {
+                document.location.href = '/admin/';
+              });
+            }
+          });
+          // Ouvre automatiquement le widget si un token est présent dans l'URL
+          const hash = window.location.hash;
+          if (hash && (hash.includes('invite_token') || hash.includes('recovery_token') || hash.includes('confirmation_token'))) {
+            window.netlifyIdentity.open();
           }
-        });
-      }
+        }
+      });
     </script>
   </body>
 </html>
