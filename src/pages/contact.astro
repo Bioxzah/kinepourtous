@@ -8,21 +8,49 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     <div class="contact-grid">
       <div class="contact-infos">
         <h2>Cabinet</h2>
-        <p>📍 Adresse du cabinet</p>
-        <p>📞 01 23 45 67 89</p>
-        <p>📧 contact@kinepourtous.fr</p>
+        <div class="info-ligne">
+          <span class="info-icon">📍</span>
+          <span>Adresse du cabinet — à compléter</span>
+        </div>
 
         <h2>Horaires</h2>
-        <p>Lundi – Vendredi : 8h – 19h</p>
-        <p>Samedi : 8h – 12h</p>
+        <div class="horaires">
+          <div class="horaire-ligne"><span>Lundi – Vendredi</span><span>8h – 19h</span></div>
+          <div class="horaire-ligne"><span>Samedi</span><span>8h – 12h</span></div>
+        </div>
       </div>
 
       <div class="rdv-bloc">
-        <h2>Prendre rendez-vous</h2>
-        <p>Réservez directement en ligne via Doctolib :</p>
-        <!-- Remplacer par le vrai lien Doctolib -->
-        <a href="#" class="btn-primary btn-doctolib">Prendre RDV sur Doctolib</a>
+        <div class="rdv-card">
+          <h2>Prendre rendez-vous</h2>
+          <p>Réservez directement en ligne via Doctolib, disponible 24h/24.</p>
+          <a href="#" class="btn-primary btn-doctolib">Prendre RDV sur Doctolib</a>
+          <p class="rdv-note">Lien Doctolib à configurer</p>
+        </div>
       </div>
     </div>
   </section>
 </BaseLayout>
+
+<style>
+  .contact-page h1 { font-size: clamp(1.6rem, 3vw, 2.2rem); margin-bottom: 2rem; }
+  .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; }
+  .contact-infos h2 { font-size: 1.1rem; color: var(--bleu); margin: 1.5rem 0 0.75rem; }
+  .contact-infos h2:first-child { margin-top: 0; }
+  .info-ligne { display: flex; gap: 0.75rem; align-items: flex-start; color: var(--gris); }
+  .info-icon { font-size: 1.1rem; }
+  .horaires { display: flex; flex-direction: column; gap: 0.4rem; }
+  .horaire-ligne { display: flex; justify-content: space-between; padding: 0.4rem 0; border-bottom: 1px solid #f3f4f6; color: var(--gris); font-size: 0.95rem; }
+  .rdv-card {
+    background: var(--bleu-clair);
+    border: 2px solid var(--bleu);
+    border-radius: 1rem;
+    padding: 2rem;
+    text-align: center;
+  }
+  .rdv-card h2 { color: var(--bleu); margin-bottom: 0.75rem; }
+  .rdv-card p { color: var(--gris); margin-bottom: 1.5rem; }
+  .btn-doctolib { width: 100%; text-align: center; }
+  .rdv-note { font-size: 0.75rem; color: #9ca3af; margin-top: 0.75rem; margin-bottom: 0; }
+  @media (max-width: 640px) { .contact-grid { grid-template-columns: 1fr; } }
+</style>
