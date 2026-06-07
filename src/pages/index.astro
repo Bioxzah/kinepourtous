@@ -1,245 +1,411 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+const fiches = await getCollection('fiches');
+
+const zones = [
+  { id: 'épaule',   label: 'Épaule',   url: '%C3%A9paule', fill: '#DBEAFE', stroke: '#3B82F6', dot: '#2563EB' },
+  { id: 'dos',      label: 'Dos',      url: 'dos',          fill: '#D1FAE5', stroke: '#10B981', dot: '#059669' },
+  { id: 'coude',    label: 'Coude',    url: 'coude',        fill: '#FEF3C7', stroke: '#F59E0B', dot: '#D97706' },
+  { id: 'genou',    label: 'Genou',    url: 'genou',        fill: '#EDE9FE', stroke: '#8B5CF6', dot: '#7C3AED' },
+  { id: 'cheville', label: 'Cheville', url: 'cheville',     fill: '#FCE7F3', stroke: '#EC4899', dot: '#DB2777' },
+  { id: 'pied',     label: 'Pied',     url: 'pied',         fill: '#CCFBF1', stroke: '#14B8A6', dot: '#0D9488' },
+];
+
+const counts = new Map<string, number>();
+fiches.forEach(f => {
+  const z = f.data.zone as string;
+  counts.set(z, (counts.get(z) || 0) + 1);
+});
 ---
 <BaseLayout titre="Accueil">
   <div class="home">
+
     <div class="intro">
-      <p class="intro-label">Cabinet de kinésithérapie</p>
-      <h1>Kiné Pour Tous</h1>
-      <p class="intro-sub">Sélectionnez une zone anatomique pour accéder à vos fiches d'exercices.</p>
+      <span class="intro-pill">Cabinet de kinésithérapie</span>
+      <h1>Où avez-vous mal ?</h1>
+      <p class="intro-sub">Touchez une zone sur le corps ou choisissez dans la liste</p>
     </div>
 
-    <div class="body-container">
-      <svg viewBox="0 0 200 420" xmlns="http://www.w3.org/2000/svg" class="body-svg" aria-label="Corps humain cliquable par zone">
+    <div class="navigator">
 
-        <!-- Tête → toutes les fiches -->
-        <a href="/fiches">
-          <g class="bz" aria-label="Toutes les fiches">
-            <ellipse cx="100" cy="50" rx="28" ry="33"/>
-          </g>
+      <!-- Corps humain SVG -->
+      <div class="body-wrap">
+        <svg viewBox="0 0 200 420" xmlns="http://www.w3.org/2000/svg" class="body-svg">
+
+          <!-- Tête -->
+          <a href="/fiches">
+            <ellipse cx="100" cy="50" rx="28" ry="33"
+              fill="#F3F4F6" stroke="#D1D5DB" stroke-width="1.5"
+              class="bz-head"/>
+          </a>
+
+          <!-- Cou -->
+          <rect x="92" y="82" width="16" height="13"
+            fill="#F3F4F6" stroke="#D1D5DB" stroke-width="1"
+            style="pointer-events:none"/>
+
+          <!-- DOS (buste) -->
+          <a href="/fiches?zone=dos" data-zone="dos">
+            <g class="bz" data-zone="dos">
+              <path fill="#D1FAE5" stroke="#10B981" stroke-width="1.6"
+                d="M62 94 C60 140 63 185 66 205 L134 205 C137 185 140 140 138 94 Q120 87 100 87 Q80 87 62 94 Z"/>
+              <text x="100" y="148" text-anchor="middle"
+                font-size="13" font-weight="800" fill="#065F46"
+                font-family="system-ui,sans-serif"
+                paint-order="stroke" stroke="white" stroke-width="4" stroke-linejoin="round"
+                style="pointer-events:none">DOS</text>
+            </g>
+          </a>
+
+          <!-- BASSIN (DOS) -->
+          <a href="/fiches?zone=dos" data-zone="dos">
+            <g class="bz" data-zone="dos">
+              <path fill="#D1FAE5" stroke="#10B981" stroke-width="1.6"
+                d="M66 206 C64 222 66 240 70 250 Q84 258 100 258 Q116 258 130 250 C134 240 136 222 134 206 Z"/>
+            </g>
+          </a>
+
+          <!-- ÉPAULE gauche -->
+          <a href="/fiches?zone=%C3%A9paule" data-zone="épaule">
+            <g class="bz" data-zone="épaule">
+              <path fill="#DBEAFE" stroke="#3B82F6" stroke-width="1.6"
+                d="M62 96 C42 104 30 122 28 142 L44 146 C46 132 54 116 70 108 Z"/>
+              <text x="42" y="128" text-anchor="middle"
+                font-size="7" font-weight="800" fill="#1D4ED8"
+                font-family="system-ui,sans-serif"
+                paint-order="stroke" stroke="white" stroke-width="3" stroke-linejoin="round"
+                style="pointer-events:none">ÉP.</text>
+            </g>
+          </a>
+
+          <!-- COUDE gauche -->
+          <a href="/fiches?zone=coude" data-zone="coude">
+            <g class="bz" data-zone="coude">
+              <path fill="#FEF3C7" stroke="#F59E0B" stroke-width="1.6"
+                d="M28 144 C22 168 22 196 26 218 L42 215 C38 196 36 170 44 148 Z"/>
+              <text x="34" y="185" text-anchor="middle"
+                font-size="6.5" font-weight="800" fill="#92400E"
+                font-family="system-ui,sans-serif"
+                paint-order="stroke" stroke="white" stroke-width="3" stroke-linejoin="round"
+                style="pointer-events:none">CO.</text>
+            </g>
+          </a>
+
+          <!-- ÉPAULE droite -->
+          <a href="/fiches?zone=%C3%A9paule" data-zone="épaule">
+            <g class="bz" data-zone="épaule">
+              <path fill="#DBEAFE" stroke="#3B82F6" stroke-width="1.6"
+                d="M138 96 C158 104 170 122 172 142 L156 146 C154 132 146 116 130 108 Z"/>
+              <text x="158" y="128" text-anchor="middle"
+                font-size="7" font-weight="800" fill="#1D4ED8"
+                font-family="system-ui,sans-serif"
+                paint-order="stroke" stroke="white" stroke-width="3" stroke-linejoin="round"
+                style="pointer-events:none">ÉP.</text>
+            </g>
+          </a>
+
+          <!-- COUDE droit -->
+          <a href="/fiches?zone=coude" data-zone="coude">
+            <g class="bz" data-zone="coude">
+              <path fill="#FEF3C7" stroke="#F59E0B" stroke-width="1.6"
+                d="M172 144 C178 168 178 196 174 218 L158 215 C162 196 164 170 156 148 Z"/>
+              <text x="166" y="185" text-anchor="middle"
+                font-size="6.5" font-weight="800" fill="#92400E"
+                font-family="system-ui,sans-serif"
+                paint-order="stroke" stroke="white" stroke-width="3" stroke-linejoin="round"
+                style="pointer-events:none">CO.</text>
+            </g>
+          </a>
+
+          <!-- GENOU gauche -->
+          <a href="/fiches?zone=genou" data-zone="genou">
+            <g class="bz" data-zone="genou">
+              <rect fill="#EDE9FE" stroke="#8B5CF6" stroke-width="1.6"
+                x="66" y="260" width="30" height="64" rx="9"/>
+              <text x="81" y="296" text-anchor="middle"
+                font-size="7.5" font-weight="800" fill="#4C1D95"
+                font-family="system-ui,sans-serif"
+                paint-order="stroke" stroke="white" stroke-width="3" stroke-linejoin="round"
+                style="pointer-events:none">GEN.</text>
+            </g>
+          </a>
+
+          <!-- GENOU droit -->
+          <a href="/fiches?zone=genou" data-zone="genou">
+            <g class="bz" data-zone="genou">
+              <rect fill="#EDE9FE" stroke="#8B5CF6" stroke-width="1.6"
+                x="104" y="260" width="30" height="64" rx="9"/>
+              <text x="119" y="296" text-anchor="middle"
+                font-size="7.5" font-weight="800" fill="#4C1D95"
+                font-family="system-ui,sans-serif"
+                paint-order="stroke" stroke="white" stroke-width="3" stroke-linejoin="round"
+                style="pointer-events:none">GEN.</text>
+            </g>
+          </a>
+
+          <!-- CHEVILLE gauche -->
+          <a href="/fiches?zone=cheville" data-zone="cheville">
+            <g class="bz" data-zone="cheville">
+              <rect fill="#FCE7F3" stroke="#EC4899" stroke-width="1.6"
+                x="66" y="327" width="30" height="58" rx="7"/>
+              <text x="81" y="360" text-anchor="middle"
+                font-size="6.5" font-weight="800" fill="#9D174D"
+                font-family="system-ui,sans-serif"
+                paint-order="stroke" stroke="white" stroke-width="3" stroke-linejoin="round"
+                style="pointer-events:none">CHV.</text>
+            </g>
+          </a>
+
+          <!-- CHEVILLE droite -->
+          <a href="/fiches?zone=cheville" data-zone="cheville">
+            <g class="bz" data-zone="cheville">
+              <rect fill="#FCE7F3" stroke="#EC4899" stroke-width="1.6"
+                x="104" y="327" width="30" height="58" rx="7"/>
+              <text x="119" y="360" text-anchor="middle"
+                font-size="6.5" font-weight="800" fill="#9D174D"
+                font-family="system-ui,sans-serif"
+                paint-order="stroke" stroke="white" stroke-width="3" stroke-linejoin="round"
+                style="pointer-events:none">CHV.</text>
+            </g>
+          </a>
+
+          <!-- PIED gauche -->
+          <a href="/fiches?zone=pied" data-zone="pied">
+            <g class="bz" data-zone="pied">
+              <ellipse fill="#CCFBF1" stroke="#14B8A6" stroke-width="1.6"
+                cx="81" cy="393" rx="22" ry="10"/>
+              <text x="81" y="396" text-anchor="middle"
+                font-size="7" font-weight="800" fill="#0F766E"
+                font-family="system-ui,sans-serif"
+                paint-order="stroke" stroke="white" stroke-width="3" stroke-linejoin="round"
+                style="pointer-events:none">PIED</text>
+            </g>
+          </a>
+
+          <!-- PIED droit -->
+          <a href="/fiches?zone=pied" data-zone="pied">
+            <g class="bz" data-zone="pied">
+              <ellipse fill="#CCFBF1" stroke="#14B8A6" stroke-width="1.6"
+                cx="119" cy="393" rx="22" ry="10"/>
+              <text x="119" y="396" text-anchor="middle"
+                font-size="7" font-weight="800" fill="#0F766E"
+                font-family="system-ui,sans-serif"
+                paint-order="stroke" stroke="white" stroke-width="3" stroke-linejoin="round"
+                style="pointer-events:none">PIED</text>
+            </g>
+          </a>
+
+        </svg>
+      </div>
+
+      <!-- Catégories côté droit -->
+      <div class="cat-list">
+        {zones.map(z => (
+          <a
+            href={`/fiches?zone=${z.url}`}
+            class="cat-btn"
+            data-zone={z.id}
+            style={`--fill:${z.fill};--stroke:${z.stroke};--dot:${z.dot}`}
+          >
+            <span class="cat-dot"></span>
+            <div class="cat-info">
+              <span class="cat-name">{z.label}</span>
+              <span class="cat-count">
+                {counts.get(z.id)
+                  ? `${counts.get(z.id)} fiche${counts.get(z.id)! > 1 ? 's' : ''}`
+                  : 'Bientôt disponible'}
+              </span>
+            </div>
+            <span class="cat-arrow">›</span>
+          </a>
+        ))}
+
+        <a href="/fiches" class="cat-btn cat-all">
+          <span class="cat-dot" style="background:#6B7280"></span>
+          <div class="cat-info">
+            <span class="cat-name">Toutes les fiches</span>
+            <span class="cat-count">{fiches.length} fiches disponibles</span>
+          </div>
+          <span class="cat-arrow">›</span>
         </a>
+      </div>
 
-        <!-- Cou (visuel) -->
-        <rect x="92" y="82" width="16" height="13" fill="#EFF2E5" stroke="rgba(70,80,40,0.18)" stroke-width="1" style="pointer-events:none"/>
-
-        <!-- Buste → Dos -->
-        <a href="/fiches?zone=dos">
-          <g class="bz" aria-label="Dos">
-            <path d="M62 94 C60 140 63 185 66 205 L134 205 C137 185 140 140 138 94 Q120 87 100 87 Q80 87 62 94 Z"/>
-            <text class="bz-lbl" x="100" y="152">DOS</text>
-          </g>
-        </a>
-
-        <!-- Bassin → Dos -->
-        <a href="/fiches?zone=dos">
-          <g class="bz" aria-label="Dos · Bassin">
-            <path d="M66 206 C64 222 66 240 70 250 Q84 258 100 258 Q116 258 130 250 C134 240 136 222 134 206 Z"/>
-          </g>
-        </a>
-
-        <!-- Épaule gauche -->
-        <a href="/fiches?zone=%C3%A9paule">
-          <g class="bz" aria-label="Épaule">
-            <path d="M62 96 C42 104 30 122 28 142 L44 146 C46 132 54 116 70 108 Z"/>
-          </g>
-        </a>
-
-        <!-- Avant-bras gauche → Coude -->
-        <a href="/fiches?zone=coude">
-          <g class="bz" aria-label="Coude">
-            <path d="M28 144 C22 168 22 196 26 218 L42 215 C38 196 36 170 44 148 Z"/>
-          </g>
-        </a>
-
-        <!-- Épaule droite -->
-        <a href="/fiches?zone=%C3%A9paule">
-          <g class="bz" aria-label="Épaule">
-            <path d="M138 96 C158 104 170 122 172 142 L156 146 C154 132 146 116 130 108 Z"/>
-          </g>
-        </a>
-
-        <!-- Avant-bras droit → Coude -->
-        <a href="/fiches?zone=coude">
-          <g class="bz" aria-label="Coude">
-            <path d="M172 144 C178 168 178 196 174 218 L158 215 C162 196 164 170 156 148 Z"/>
-          </g>
-        </a>
-
-        <!-- Genou gauche -->
-        <a href="/fiches?zone=genou">
-          <g class="bz" aria-label="Genou">
-            <rect x="66" y="260" width="30" height="64" rx="8"/>
-          </g>
-        </a>
-
-        <!-- Genou droit -->
-        <a href="/fiches?zone=genou">
-          <g class="bz" aria-label="Genou">
-            <rect x="104" y="260" width="30" height="64" rx="8"/>
-          </g>
-        </a>
-
-        <!-- Cheville gauche -->
-        <a href="/fiches?zone=cheville">
-          <g class="bz" aria-label="Cheville">
-            <rect x="66" y="327" width="30" height="58" rx="6"/>
-          </g>
-        </a>
-
-        <!-- Cheville droite -->
-        <a href="/fiches?zone=cheville">
-          <g class="bz" aria-label="Cheville">
-            <rect x="104" y="327" width="30" height="58" rx="6"/>
-          </g>
-        </a>
-
-        <!-- Pied gauche -->
-        <a href="/fiches?zone=pied">
-          <g class="bz" aria-label="Pied">
-            <ellipse cx="81" cy="393" rx="22" ry="10"/>
-          </g>
-        </a>
-
-        <!-- Pied droit -->
-        <a href="/fiches?zone=pied">
-          <g class="bz" aria-label="Pied">
-            <ellipse cx="119" cy="393" rx="22" ry="10"/>
-          </g>
-        </a>
-
-        <!-- Labels côté gauche -->
-        <text class="side-lbl" x="2" y="122" text-anchor="start">Épaule</text>
-        <line x1="28" y1="119" x2="52" y2="119" stroke="rgba(70,80,40,0.15)" stroke-width="0.8"/>
-
-        <text class="side-lbl" x="2" y="183" text-anchor="start">Coude</text>
-        <line x1="28" y1="180" x2="37" y2="180" stroke="rgba(70,80,40,0.15)" stroke-width="0.8"/>
-
-        <text class="side-lbl" x="2" y="296" text-anchor="start">Genou</text>
-        <line x1="40" y1="293" x2="66" y2="293" stroke="rgba(70,80,40,0.15)" stroke-width="0.8"/>
-
-        <text class="side-lbl" x="2" y="360" text-anchor="start">Cheville</text>
-        <line x1="46" y1="357" x2="66" y2="357" stroke="rgba(70,80,40,0.15)" stroke-width="0.8"/>
-
-        <text class="side-lbl" x="100" y="412" text-anchor="middle">Pied</text>
-
-      </svg>
-    </div>
-
-    <div class="zone-tags">
-      <a href="/fiches?zone=%C3%A9paule" class="ztag">Épaule</a>
-      <a href="/fiches?zone=dos" class="ztag">Dos</a>
-      <a href="/fiches?zone=coude" class="ztag">Coude</a>
-      <a href="/fiches?zone=genou" class="ztag">Genou</a>
-      <a href="/fiches?zone=cheville" class="ztag">Cheville</a>
-      <a href="/fiches?zone=pied" class="ztag">Pied</a>
-      <a href="/fiches" class="ztag ztag-all">Toutes les fiches →</a>
     </div>
   </div>
 </BaseLayout>
+
+<script>
+  // Surlignage croisé : survol d'un bouton → zone SVG s'illumine
+  document.querySelectorAll<HTMLElement>('.cat-btn[data-zone]').forEach(btn => {
+    const zone = btn.dataset.zone!;
+    btn.addEventListener('mouseenter', () => {
+      document.querySelectorAll<SVGElement>(`.bz[data-zone="${zone}"] path, .bz[data-zone="${zone}"] rect, .bz[data-zone="${zone}"] ellipse`)
+        .forEach(el => { el.style.filter = 'brightness(0.82) saturate(1.5)'; el.style.strokeWidth = '2.4'; });
+    });
+    btn.addEventListener('mouseleave', () => {
+      document.querySelectorAll<SVGElement>('.bz path, .bz rect, .bz ellipse')
+        .forEach(el => { el.style.filter = ''; el.style.strokeWidth = ''; });
+    });
+  });
+</script>
 
 <style>
   .home {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 1.75rem;
-    padding: 2rem 0 3rem;
+    gap: 2.5rem;
+    padding: 2.5rem 0 5rem;
   }
 
+  /* ── Intro ── */
   .intro {
     text-align: center;
-    max-width: 480px;
+    max-width: 520px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
   }
-  .intro-label {
+  .intro-pill {
+    display: inline-block;
+    background: var(--bleu-clair);
+    color: var(--bleu);
     font-size: 0.78rem;
-    font-weight: 600;
+    font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.14em;
-    color: var(--bleu);
-    margin-bottom: 0.5rem;
+    padding: 0.3rem 0.9rem;
+    border-radius: 9999px;
+    border: 1px solid rgba(105,122,52,0.25);
   }
   .intro h1 {
-    font-size: clamp(1.5rem, 4vw, 2rem);
-    color: var(--vert);
-    margin-bottom: 0.6rem;
-    font-weight: 700;
+    font-size: clamp(2rem, 5vw, 3rem);
+    color: #111827;
+    font-weight: 900;
+    line-height: 1.15;
+    margin: 0;
   }
   .intro-sub {
-    font-size: 0.92rem;
+    font-size: 1.05rem;
     color: var(--gris);
     line-height: 1.5;
+    margin: 0;
   }
 
-  .body-container {
+  /* ── Layout ── */
+  .navigator {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 2.5rem;
+    align-items: start;
     width: 100%;
-    max-width: 240px;
+    max-width: 680px;
   }
 
+  /* ── Corps SVG ── */
+  .body-wrap {
+    position: sticky;
+    top: 80px;
+  }
   .body-svg {
     width: 100%;
     height: auto;
     display: block;
+    filter: drop-shadow(0 6px 20px rgba(0,0,0,0.07));
   }
-
   .bz { cursor: pointer; }
-  .bz ellipse, .bz path, .bz rect {
-    fill: #EFF2E5;
-    stroke: rgba(70,80,40,0.22);
-    stroke-width: 1.2;
-    transition: fill 0.18s, stroke 0.18s, stroke-width 0.18s;
+  .bz path, .bz rect, .bz ellipse {
+    transition: filter 0.18s ease, stroke-width 0.18s ease;
   }
-  .bz:hover ellipse, .bz:hover path, .bz:hover rect {
-    fill: rgba(105,122,52,0.28);
-    stroke: #697A34;
-    stroke-width: 1.8;
+  .bz:hover path, .bz:hover rect, .bz:hover ellipse {
+    filter: brightness(0.85) saturate(1.4);
+    stroke-width: 2.4;
   }
+  .bz-head {
+    cursor: pointer;
+    transition: filter 0.18s;
+  }
+  a:hover .bz-head { filter: brightness(0.9); }
 
-  .bz-lbl {
-    font-family: system-ui, sans-serif;
-    font-size: 7px;
-    fill: rgba(70,80,40,0.45);
-    pointer-events: none;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-  }
-  .side-lbl {
-    font-family: system-ui, sans-serif;
-    font-size: 6.5px;
-    fill: rgba(70,80,40,0.38);
-    pointer-events: none;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-  }
-
-  .zone-tags {
+  /* ── Catégories ── */
+  .cat-list {
     display: flex;
-    flex-wrap: wrap;
-    gap: 0.45rem;
-    justify-content: center;
-    max-width: 340px;
+    flex-direction: column;
+    gap: 0.55rem;
   }
-  .ztag {
-    border: 1px solid rgba(70,80,40,0.22);
-    color: var(--gris);
-    padding: 0.3rem 0.75rem;
-    font-size: 0.8rem;
-    border-radius: var(--rayon);
-    text-decoration: none;
-    transition: all 0.15s;
+  .cat-btn {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem 1.1rem;
     background: white;
+    border: 2px solid #E5E7EB;
+    border-radius: 16px;
+    text-decoration: none;
+    transition: border-color 0.2s, background 0.2s, transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+    cursor: pointer;
+    min-height: 64px;
   }
-  .ztag:hover {
-    border-color: var(--bleu);
-    color: var(--bleu);
-    background: var(--bleu-clair);
+  .cat-btn:hover {
+    border-color: var(--stroke);
+    background: var(--fill);
+    transform: translateX(6px);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.08);
   }
-  .ztag-all {
-    border-color: var(--bleu);
-    color: var(--bleu);
-    font-weight: 600;
+  .cat-all { --stroke: #9CA3AF; --fill: #F9FAFB; }
+  .cat-all:hover { border-color: #9CA3AF; background: #F9FAFB; }
+
+  .cat-dot {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: var(--dot);
+    flex-shrink: 0;
   }
-  .ztag-all:hover {
-    background: var(--bleu);
-    color: white;
+  .cat-info {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    flex: 1;
+    min-width: 0;
+  }
+  .cat-name {
+    font-size: 1.1rem;
+    font-weight: 800;
+    color: #111827;
+    line-height: 1.2;
+  }
+  .cat-count {
+    font-size: 0.8rem;
+    color: #9CA3AF;
+  }
+  .cat-arrow {
+    font-size: 1.5rem;
+    color: #D1D5DB;
+    line-height: 1;
+    transition: color 0.2s, transform 0.2s;
+    flex-shrink: 0;
+  }
+  .cat-btn:hover .cat-arrow {
+    color: var(--stroke);
+    transform: translateX(3px);
+  }
+  .cat-all:hover .cat-arrow { color: #6B7280; }
+
+  /* ── Mobile ── */
+  @media (max-width: 640px) {
+    .navigator {
+      grid-template-columns: 1fr;
+      max-width: 380px;
+    }
+    .body-wrap {
+      position: static;
+      max-width: 200px;
+      margin: 0 auto;
+    }
   }
 </style>
