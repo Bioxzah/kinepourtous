@@ -15,6 +15,22 @@ const { titre, description = 'Fiches d\'exercices de kinésithérapie par pathol
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="stylesheet" href="/styles/global.css" />
     <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+    <script>
+      // Doit s'exécuter avant le chargement complet pour capter le token
+      (function() {
+        var hash = window.location.hash;
+        if (hash && (hash.indexOf('invite_token') > -1 || hash.indexOf('recovery_token') > -1 || hash.indexOf('confirmation_token') > -1)) {
+          document.addEventListener('DOMContentLoaded', function() {
+            var interval = setInterval(function() {
+              if (window.netlifyIdentity) {
+                clearInterval(interval);
+                window.netlifyIdentity.open();
+              }
+            }, 100);
+          });
+        }
+      })();
+    </script>
   </head>
   <body>
     <header>
@@ -35,7 +51,6 @@ const { titre, description = 'Fiches d\'exercices de kinésithérapie par pathol
       <p>© {new Date().getFullYear()} Kiné Pour Tous — Cabinet de kinésithérapie</p>
     </footer>
     <script>
-      window.netlifyIdentity = window.netlifyIdentity || {};
       document.addEventListener('DOMContentLoaded', () => {
         if (window.netlifyIdentity) {
           window.netlifyIdentity.on('init', user => {
@@ -45,11 +60,6 @@ const { titre, description = 'Fiches d\'exercices de kinésithérapie par pathol
               });
             }
           });
-          // Ouvre automatiquement le widget si un token est présent dans l'URL
-          const hash = window.location.hash;
-          if (hash && (hash.includes('invite_token') || hash.includes('recovery_token') || hash.includes('confirmation_token'))) {
-            window.netlifyIdentity.open();
-          }
         }
       });
     </script>
